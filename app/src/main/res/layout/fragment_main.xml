@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
         <!--User-->
         <EditText
+            android:id="@+id/edtUsername"
             android:hint="User : "
             android:textSize="@dimen/h3"
             android:inputType="text"
@@ -21,7 +22,7 @@
 
         <!--Password-->
         <EditText
-
+            android:id="@+id/edtPassword"
             android:hint="Password : "
             android:textSize="@dimen/h3"
             android:background="@drawable/textfield_password"
@@ -48,6 +49,7 @@
 
         <!--Login-->
         <Button
+            android:id="@+id/btnLogin"
             android:text="Login"
             android:layout_weight="1"
             android:layout_width="0dp"

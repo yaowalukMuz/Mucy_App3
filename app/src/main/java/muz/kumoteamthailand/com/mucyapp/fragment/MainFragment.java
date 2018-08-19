@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.JetPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,12 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import muz.kumoteamthailand.com.mucyapp.NotificationActivity;
 import muz.kumoteamthailand.com.mucyapp.R;
+import muz.kumoteamthailand.com.mucyapp.utility.MyAlert;
 import muz.kumoteamthailand.com.mucyapp.utility.MyConstant;
 import muz.kumoteamthailand.com.mucyapp.utility.ReadAllData;
 
@@ -94,15 +100,77 @@ public class MainFragment extends Fragment{
       //  myNotification();
 
 //        Regiter Controller
+         regiterController();
 
 
-
-
-        regiterController();
+//        Login Controller
+        loginController();
 
 
     }//Main Method
 
+    private void loginController() {
+        Button button = getView().findViewById(R.id.btnLogin);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EditText userNameEditText = getView().findViewById(R.id.edtUsername);
+                EditText passwordEditText = getView().findViewById(R.id.edtPassword);
+
+                String userString = userNameEditText.getText().toString().trim();
+                String passwordString = passwordEditText.getText().toString().trim();
+
+
+                MyAlert myAlert = new MyAlert(getActivity());
+                MyConstant myConstant = new MyConstant();
+                String[] columStrings = myConstant.getColumn_tm_client();
+                ArrayList<String> stringArrayList = new ArrayList<>();
+                boolean loginBool = true;
+
+
+                if (userString.isEmpty() || passwordString.isEmpty()) {
+                    myAlert.normalDialog("Have Space","Please fill every blank");
+
+                } else {
+                    try {
+                        ReadAllData readAllData = new ReadAllData(getActivity());
+                        readAllData.execute(myConstant.getUrlReadAllUser());
+                        String jsonString = readAllData.get();
+                        Log.d("19AugV1", "JsonString ==>" + jsonString);
+
+                        JSONArray jsonArray = new JSONArray(jsonString);
+                        for (int i=0; i<jsonArray.length(); i+=1) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                            if (userString.equals(jsonObject.getString(columStrings[3]))) {
+                                loginBool = false;
+                                for (int i1=0; i1< columStrings.length; i1+=1) {
+                                    stringArrayList.add(jsonObject.getString(columStrings[i1]));
+                                }// for
+
+                            }   // if
+
+                        }   // for loop
+
+
+                        if (loginBool) {
+                            myAlert.normalDialog("User False", "No " + userString + "in my database");
+                        } else if (passwordString.equals(stringArrayList.get(4))) {
+                            Toast.makeText(getActivity(),"Welcome " + stringArrayList.get(1),Toast.LENGTH_SHORT).show();
+                        } else {
+                            myAlert.normalDialog("Password False","Please try again");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
+    }
 
 
     //method onclick register
