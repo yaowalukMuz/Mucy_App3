@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.JetPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 import muz.kumoteamthailand.com.mucyapp.NotificationActivity;
 import muz.kumoteamthailand.com.mucyapp.R;
+import muz.kumoteamthailand.com.mucyapp.ServiceActivity;
 import muz.kumoteamthailand.com.mucyapp.utility.MyAlert;
 import muz.kumoteamthailand.com.mucyapp.utility.MyConstant;
 import muz.kumoteamthailand.com.mucyapp.utility.ReadAllData;
@@ -158,6 +160,10 @@ public class MainFragment extends Fragment{
                             myAlert.normalDialog("User False", "No " + userString + "in my database");
                         } else if (passwordString.equals(stringArrayList.get(4))) {
                             Toast.makeText(getActivity(),"Welcome " + stringArrayList.get(1),Toast.LENGTH_SHORT).show();
+
+                            //
+                            saveSharePreferance(stringArrayList);
+
                         } else {
                             myAlert.normalDialog("Password False","Please try again");
                         }
@@ -170,6 +176,18 @@ public class MainFragment extends Fragment{
 
             }
         });
+    }
+
+    private void saveSharePreferance(ArrayList<String> stringArrayList) {
+        SharedPreferences sharedPreferences = getActivity()
+                .getSharedPreferences("MyLogin", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Login", stringArrayList.toString());
+        Log.d("19AugV2", "Save Login==> " + stringArrayList.toString());
+
+        editor.commit();
+//after save preference and past to Service
+        startActivity(new Intent(getActivity(), ServiceActivity.class));
     }
 
 

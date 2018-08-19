@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bg_clear"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtNamePacket"
+    android:layout_gravity="center_horizontal"
+    android:textSize="@dimen/h1"
+    android:textStyle="bold"
+    android:text="Name Package"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txtPrice"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/h2"
+        android:text="500 Bath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txtPoint"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/h2"
+        android:text="Point : 10 Point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
