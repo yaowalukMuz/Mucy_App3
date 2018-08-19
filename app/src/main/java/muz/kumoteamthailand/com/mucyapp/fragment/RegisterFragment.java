@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import muz.kumoteamthailand.com.mucyapp.R;
+import muz.kumoteamthailand.com.mucyapp.utility.AddNewUser;
 import muz.kumoteamthailand.com.mucyapp.utility.MyAlert;
+import muz.kumoteamthailand.com.mucyapp.utility.MyConstant;
 
 public class RegisterFragment extends Fragment {
 
@@ -50,13 +53,29 @@ public class RegisterFragment extends Fragment {
                 String passwordString = passwordEditText.getText().toString().trim();
 
                 MyAlert myAlert = new MyAlert(getActivity());
-
+                MyConstant myConstant = new MyConstant();
 
                 if (nameString.isEmpty() || lastNameString.isEmpty() || emailString.isEmpty() || phoneString.isEmpty() || usernameString.isEmpty() || passwordString.isEmpty()) {
                 myAlert.normalDialog("Have Space","Please Fill Every Blank");
 
                 } else {
 //                    Non Space
+
+                    try {
+                        AddNewUser addNewUser = new AddNewUser(getActivity());
+                        addNewUser.execute(nameString,lastNameString,usernameString,passwordString,emailString,phoneString,myConstant.getUrlAddNewUser());
+                        String resultString = addNewUser.get();
+                        Log.d("19AugV1", "Result___>" + resultString);
+
+                        if (Boolean.parseBoolean(resultString)) {
+                            getActivity().getSupportFragmentManager().popBackStack();
+                        } else {
+                            myAlert.normalDialog("Cannot Register","Please try again");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }
 
